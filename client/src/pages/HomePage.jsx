@@ -148,9 +148,9 @@ const HomePage = () => {
           <div className="max-w-4xl mx-auto card p-8">
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="text-center md:text-left mb-6 md:mb-0">
-                <h3 className="text-2xl font-bold">Boston Celtics</h3>
+                <h3 className="text-2xl font-bold">Manchester United</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  East Conference
+                  Premier League
                 </p>
               </div>
 
@@ -159,21 +159,21 @@ const HomePage = () => {
               </div>
 
               <div className="text-center md:text-right">
-                <h3 className="text-2xl font-bold">LA Lakers</h3>
+                <h3 className="text-2xl font-bold">Liverpool</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  West Conference
+                  Premier League
                 </p>
               </div>
             </div>
 
             <div className="mt-8 text-center">
-              <p className="text-lg">December 25, 2023 • 8:00 PM ET</p>
+              <p className="text-lg">Today • 3:00 PM</p>
               <p className="text-gray-600 dark:text-gray-300 mt-2">
-                Staples Center, Los Angeles
+                Old Trafford, Manchester
               </p>
 
               <Link
-                to="/matches/1" // Changed from "featured" to use a valid match ID
+                to="/football/matches/1"
                 className="btn btn-primary mt-6 inline-block"
               >
                 View Details

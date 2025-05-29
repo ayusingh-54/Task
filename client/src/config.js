@@ -8,7 +8,7 @@ const config = {
   api: {
     // Base URL for API requests - will default to Vercel deployment
     baseUrl:
-      import.meta.env.VITE_API_BASE_URL || "https://task-mu-silk.vercel.app",
+      import.meta.env.VITE_API_URL?.replace(/\/$/, '') || "https://task-mu-silk.vercel.app",
 
     // When true, requests go through Vite's proxy to avoid CORS
     useProxy: import.meta.env.VITE_USE_PROXY === "true" || false,
