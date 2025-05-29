@@ -16,97 +16,128 @@ const HomePage = () => {
             Stay updated with the latest scores, schedules, and statistics for
             your favorite sports teams.
           </p>
-          <Link
-            to="/matches"
-            className="btn inline-block px-8 py-3 text-lg font-semibold bg-white text-primary-dark hover:bg-gray-100 rounded-full transition-colors duration-300"
-          >
-            View Upcoming Matches
-          </Link>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="w-full py-16 mt-12">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Why Use Our Match Tracker?
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="card p-6 text-center">
-              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-primary-light dark:bg-primary-dark rounded-full text-white">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Real-Time Updates</h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Get live scores and match events as they happen.
-              </p>
-            </div>
-
-            <div className="card p-6 text-center">
-              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-primary-light dark:bg-primary-dark rounded-full text-white">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">
-                Detailed Statistics
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Dive deep into match statistics and player performance.
-              </p>
-            </div>
-
-            <div className="card p-6 text-center">
-              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-primary-light dark:bg-primary-dark rounded-full text-white">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Match Schedule</h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Never miss a game with our comprehensive match calendar.
-              </p>
-            </div>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              to="/football/today"
+              className="btn inline-block px-8 py-3 text-lg font-semibold bg-white text-primary-dark hover:bg-gray-100 rounded-full transition-colors duration-300"
+            >
+              Football Matches
+            </Link>
+            <Link
+              to="/basketball/today"
+              className="btn inline-block px-8 py-3 text-lg font-semibold bg-yellow-500 text-white hover:bg-yellow-600 rounded-full transition-colors duration-300"
+            >
+              Basketball Games
+            </Link>
+            {/* <Link
+              to="/cricket/matches"
+              className="btn inline-block px-8 py-3 text-lg font-semibold bg-green-500 text-white hover:bg-green-600 rounded-full transition-colors duration-300"
+            >
+              Cricket Matches
+            </Link> */}
           </div>
         </div>
       </section>
+      {/* Quick Navigation */}
+      <section className="w-full py-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-8">Quick Access</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Link
+              to="/football/standings/PL"
+              className="card p-6 hover:shadow-lg transition-shadow"
+            >
+              <div className="text-center">
+                <div className="w-12 h-12 mx-auto mb-3 bg-blue-500 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold">⚽</span>
+                </div>
+                <h3 className="font-semibold">Premier League</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  Standings
+                </p>
+              </div>
+            </Link>
 
+            <Link
+              to="/basketball/standings/12"
+              className="card p-6 hover:shadow-lg transition-shadow"
+            >
+              <div className="text-center">
+                <div className="w-12 h-12 mx-auto mb-3 bg-orange-500 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold">🏀</span>
+                </div>
+                <h3 className="font-semibold">NBA</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  Standings
+                </p>
+              </div>
+            </Link>
+
+            <Link
+              to="/football//today"
+              className="card p-6 hover:shadow-lg transition-shadow"
+            >
+              <div className="text-center">
+                <div className="w-12 h-12 mx-auto mb-3 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold">📅</span>
+                </div>
+                <h3 className="font-semibold">All Football</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  Matches
+                </p>
+              </div>
+            </Link>
+
+            <Link
+              to="/basketball//today"
+              className="card p-6 hover:shadow-lg transition-shadow"
+            >
+              <div className="text-center">
+                <div className="w-12 h-12 mx-auto mb-3 bg-purple-500 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold">📊</span>
+                </div>
+                <h3 className="font-semibold">All Basketball</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  Games
+                </p>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>{" "}
+      {/* Status Notice */}
+      <section className="w-full py-8 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg mt-8">
+        <div className="container mx-auto px-4 text-center">
+          <div className="flex items-center justify-center mb-3">
+            <svg
+              className="w-6 h-6 text-yellow-600 dark:text-yellow-400 mr-2"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <h3 className="text-lg font-semibold text-yellow-800 dark:text-yellow-200">
+              Demo Mode Active
+            </h3>
+          </div>
+          <p className="text-yellow-700 dark:text-yellow-300 max-w-2xl mx-auto">
+            The app is currently running with sample data for demonstration
+            purposes. This provides a consistent experience while showcasing the
+            application's features.
+          </p>
+          <div className="mt-4 text-sm text-yellow-600 dark:text-yellow-400">
+            To use live data: Set{" "}
+            <code className="bg-yellow-200 dark:bg-yellow-800 px-2 py-1 rounded">
+              VITE_USE_MOCK_DATA=false
+            </code>{" "}
+            in client/.env
+          </div>
+        </div>
+      </section>
       {/* Featured Match Section */}
       <section className="w-full py-16 bg-gray-100 dark:bg-gray-800 rounded-lg mt-12">
         <div className="container mx-auto px-4">

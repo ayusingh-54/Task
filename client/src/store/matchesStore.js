@@ -1,6 +1,10 @@
 import { create } from "zustand";
 import matchesService from "../services/matchesService";
 import { SPORTS } from "../services/apiHelper";
+import config from "../config";
+import basketballMocks from "../mocks/basketballStandings";
+import todaysMatchesMock from "../mocks/todaysMatches";
+import footballStandingsMock from "../mocks/footballStandings";
 
 // Helper to determine if data is from api-basketball (has 'response' array)
 const isApiBasketballData = (data) => data && Array.isArray(data.response);
@@ -68,19 +72,32 @@ const useMatchesStore = create((set, get) => ({
   // NEW V4 Actions
 
   // Fetch today's matches
-  fetchTodaysMatches: async () => {
+  fetchTodaysMatches: async (sport = SPORTS.FOOTBALL) => {
     set({ loading: true, error: null });
     try {
-      const data = await matchesService.getTodaysMatches();
-      const matchesList = isApiBasketballData(data)
+      const data = await matchesService.getTodaysMatches(sport);
+
+      // Adapt based on API: football-data.org has 'matches', api-basketball has 'response'
+      const matchesList = data.response
         ? data.response
         : data.matches || data.data || [];
+
       set({ todaysMatches: matchesList, loading: false });
     } catch (error) {
-      console.error("Failed to fetch today's matches:", error);
+      console.error(`Failed to fetch today's ${sport} matches:`, error);
+
+      // Fallback to mock data if API fails
+      let fallbackData;
+      if (sport === SPORTS.BASKETBALL) {
+        fallbackData = todaysMatchesMock.getBasketballMatches().response || [];
+      } else {
+        fallbackData = todaysMatchesMock.getFootballMatches().matches || [];
+      }
+
       set({
-        error: "Failed to load today's matches. Please try again later.",
+        todaysMatches: fallbackData,
         loading: false,
+        error: "Using offline data. Connection to live API failed.",
       });
     }
   },
@@ -110,26 +127,52 @@ const useMatchesStore = create((set, get) => ({
   },
 
   // Fetch standings for a specific competition/league
-  fetchCompetitionStandings: async (competitionCodeOrLeagueId, season) => {
+  fetchCompetitionStandings: async (
+    competitionCodeOrLeagueId,
+    season,
+    sport = SPORTS.FOOTBALL
+  ) => {
     set({ loading: true, error: null });
     try {
       const data = await matchesService.getCompetitionStandings(
         competitionCodeOrLeagueId,
-        season
+        season,
+        sport
       );
-      // api-basketball standings: { response: [ { league: { standings: [[]] } } ] }
-      // football-data standings: { standings: [{ table: [] }] }
-      // The raw data is stored; parsing happens in the component.
+
       set({ standings: data, loading: false });
     } catch (error) {
       console.error(
         `Failed to fetch standings for ${competitionCodeOrLeagueId}:`,
         error
       );
-      set({
-        error: `Failed to load standings for ${competitionCodeOrLeagueId}. Please try again later.`,
-        loading: false,
-      });
+
+      // Enhanced fallback logic
+      let fallbackData = null;
+
+      if (sport === SPORTS.BASKETBALL && competitionCodeOrLeagueId === "12") {
+        console.log("Using mock NBA standings data");
+        fallbackData = basketballMocks.getNBAStandings();
+      } else if (
+        sport === SPORTS.FOOTBALL &&
+        competitionCodeOrLeagueId === "PL"
+      ) {
+        console.log("Using mock Premier League standings data");
+        fallbackData = footballStandingsMock.getPremierLeague();
+      }
+
+      if (fallbackData) {
+        set({
+          standings: fallbackData,
+          loading: false,
+          error: "Using offline data. Live API temporarily unavailable.",
+        });
+      } else {
+        set({
+          error: `Failed to load standings for ${competitionCodeOrLeagueId}. Please try again later.`,
+          loading: false,
+        });
+      }
     }
   },
 

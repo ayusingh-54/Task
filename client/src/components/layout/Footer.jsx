@@ -26,12 +26,12 @@ const Footer = () => {
             >
               Home
             </Link>
-            <Link
+            {/* <Link
               to="/matches"
               className="text-gray-600 dark:text-gray-400 hover:text-primary-light dark:hover:text-primary-dark"
             >
               Matches
-            </Link>
+            </Link> */}
             <a
               href="#"
               className="text-gray-600 dark:text-gray-400 hover:text-primary-light dark:hover:text-primary-dark"
@@ -43,7 +43,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
-          <p>© {currentYear} Match Tracker. All rights reserved.</p>
+          <p>© {currentYear} Ayush Singh. All rights reserved.</p>
           <p className="mt-1">
             Data provided by external sports APIs. This app is for educational
             purposes only.

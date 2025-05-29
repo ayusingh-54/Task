@@ -29,6 +29,9 @@ const cache = {
 
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
+// Conditional logging flag - only log in development mode
+const ENABLE_DEBUG_LOGGING = process.env.NODE_ENV !== "production";
+
 // Helper function to check if cache is valid
 const isCacheValid = (cacheItem) => {
   return cacheItem.data && Date.now() - cacheItem.timestamp < CACHE_DURATION;
@@ -303,9 +306,10 @@ const cricketApiService = {
       if (isCacheValid(cache.matches)) {
         return cache.matches.data;
       }
-
       if (USE_MOCK_DATA) {
-        console.log("Using mock cricket match data for development");
+        if (ENABLE_DEBUG_LOGGING) {
+          console.log("Using mock cricket match data for development");
+        }
         cache.matches = {
           data: MOCK_CRICKET_MATCHES,
           timestamp: Date.now(),
@@ -321,7 +325,9 @@ const cricketApiService = {
       return response.data;
     } catch (error) {
       console.error("Error fetching cricket matches:", error.message);
-      console.log("API error - Using mock cricket match data as fallback");
+      if (ENABLE_DEBUG_LOGGING) {
+        console.log("API error - Using mock cricket match data as fallback");
+      }
       cache.matches = {
         data: MOCK_CRICKET_MATCHES,
         timestamp: Date.now(),
@@ -339,11 +345,12 @@ const cricketApiService = {
       ) {
         return cache.matchDetails[matchId].data;
       }
-
       if (USE_MOCK_DATA) {
-        console.log(
-          `Using mock cricket match data for development (getMatchInfo: ${matchId})`
-        );
+        if (ENABLE_DEBUG_LOGGING) {
+          console.log(
+            `Using mock cricket match data for development (getMatchInfo: ${matchId})`
+          );
+        }
         const mockMatch =
           MOCK_CRICKET_MATCHES.matches.find((m) => m.id === matchId) ||
           MOCK_CRICKET_MATCHES.matches[0];
@@ -367,9 +374,11 @@ const cricketApiService = {
         `Error fetching cricket match info with ID ${matchId}:`,
         error.message
       );
-      console.log(
-        "API error - Using mock match data as fallback (getMatchInfo)"
-      );
+      if (ENABLE_DEBUG_LOGGING) {
+        console.log(
+          "API error - Using mock match data as fallback (getMatchInfo)"
+        );
+      }
       const mockMatch =
         MOCK_CRICKET_MATCHES.matches.find((m) => m.id === matchId) ||
         MOCK_CRICKET_MATCHES.matches[0];
@@ -381,9 +390,11 @@ const cricketApiService = {
   getMatchScorecard: async (matchId) => {
     try {
       if (USE_MOCK_DATA) {
-        console.log(
-          `Using mock cricket scorecard data for development (matchId: ${matchId})`
-        );
+        if (ENABLE_DEBUG_LOGGING) {
+          console.log(
+            `Using mock cricket scorecard data for development (matchId: ${matchId})`
+          );
+        }
         const mockMatch =
           MOCK_CRICKET_MATCHES.matches.find((m) => m.id === matchId) ||
           MOCK_CRICKET_MATCHES.matches[0];
@@ -399,7 +410,9 @@ const cricketApiService = {
         `Error fetching cricket match scorecard with ID ${matchId}:`,
         error.message
       );
-      console.log("API error - Using mock scorecard data as fallback");
+      if (ENABLE_DEBUG_LOGGING) {
+        console.log("API error - Using mock scorecard data as fallback");
+      }
       const mockMatch =
         MOCK_CRICKET_MATCHES.matches.find((m) => m.id === matchId) ||
         MOCK_CRICKET_MATCHES.matches[0];
@@ -411,9 +424,11 @@ const cricketApiService = {
   getMatchCommentary: async (matchId) => {
     try {
       if (USE_MOCK_DATA) {
-        console.log(
-          `Using mock cricket commentary data for development (matchId: ${matchId})`
-        );
+        if (ENABLE_DEBUG_LOGGING) {
+          console.log(
+            `Using mock cricket commentary data for development (matchId: ${matchId})`
+          );
+        }
         return { commentary: "No commentary available in mock data" };
       }
 
@@ -426,7 +441,9 @@ const cricketApiService = {
         `Error fetching cricket match commentary with ID ${matchId}:`,
         error.message
       );
-      console.log("API error - Using mock commentary data as fallback");
+      if (ENABLE_DEBUG_LOGGING) {
+        console.log("API error - Using mock commentary data as fallback");
+      }
       return { commentary: "No commentary available" };
     }
   },

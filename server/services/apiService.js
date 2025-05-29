@@ -246,6 +246,54 @@ const MOCK_FOOTBALL_STANDINGS = {
           goalsAgainst: 7,
           goalDifference: 11,
         },
+        {
+          position: 3,
+          team: {
+            id: 61,
+            name: "Chelsea FC",
+            crest: "https://crests.football-data.org/61.svg",
+          },
+          playedGames: 10,
+          won: 6,
+          draw: 3,
+          lost: 1,
+          points: 21,
+          goalsFor: 16,
+          goalsAgainst: 8,
+          goalDifference: 8,
+        },
+        {
+          position: 4,
+          team: {
+            id: 57,
+            name: "Arsenal FC",
+            crest: "https://crests.football-data.org/57.svg",
+          },
+          playedGames: 10,
+          won: 6,
+          draw: 2,
+          lost: 2,
+          points: 20,
+          goalsFor: 15,
+          goalsAgainst: 9,
+          goalDifference: 6,
+        },
+        {
+          position: 5,
+          team: {
+            id: 65,
+            name: "Manchester City FC",
+            crest: "https://crests.football-data.org/65.svg",
+          },
+          playedGames: 10,
+          won: 5,
+          draw: 4,
+          lost: 1,
+          points: 19,
+          goalsFor: 14,
+          goalsAgainst: 7,
+          goalDifference: 7,
+        },
       ],
     },
   ],
@@ -257,11 +305,10 @@ const MOCK_FOOTBALL_STANDINGS = {
 };
 
 const MOCK_BASKETBALL_STANDINGS = {
-  // New mock for api-basketball.com standings
   response: [
     {
       league: {
-        id: 12, // NBA
+        id: 12,
         name: "NBA",
         country: {
           name: "USA",
@@ -271,9 +318,7 @@ const MOCK_BASKETBALL_STANDINGS = {
         logo: "https://media.api-sports.io/basketball/leagues/12.png",
         season: "2023-2024",
         standings: [
-          // Array of groups/conferences
           [
-            // Eastern Conference example
             {
               team: {
                 id: 1,
@@ -282,9 +327,9 @@ const MOCK_BASKETBALL_STANDINGS = {
               },
               position: 1,
               games: {
-                played: 10,
-                win: { total: 8, percentage: ".800" },
-                lose: { total: 2, percentage: ".200" },
+                played: 20,
+                win: { total: 16, percentage: ".800" },
+                lose: { total: 4, percentage: ".200" },
               },
               group: { name: "Eastern Conference", points: "N/A" },
             },
@@ -296,11 +341,69 @@ const MOCK_BASKETBALL_STANDINGS = {
               },
               position: 2,
               games: {
-                played: 10,
-                win: { total: 7, percentage: ".700" },
-                lose: { total: 3, percentage: ".300" },
+                played: 20,
+                win: { total: 14, percentage: ".700" },
+                lose: { total: 6, percentage: ".300" },
               },
               group: { name: "Eastern Conference", points: "N/A" },
+            },
+            {
+              team: {
+                id: 17,
+                name: "Brooklyn Nets",
+                logo: "https://media.api-sports.io/basketball/teams/17.png",
+              },
+              position: 3,
+              games: {
+                played: 20,
+                win: { total: 12, percentage: ".600" },
+                lose: { total: 8, percentage: ".400" },
+              },
+              group: { name: "Eastern Conference", points: "N/A" },
+            },
+          ],
+          [
+            {
+              team: {
+                id: 9,
+                name: "Los Angeles Lakers",
+                logo: "https://media.api-sports.io/basketball/teams/9.png",
+              },
+              position: 1,
+              games: {
+                played: 20,
+                win: { total: 15, percentage: ".750" },
+                lose: { total: 5, percentage: ".250" },
+              },
+              group: { name: "Western Conference", points: "N/A" },
+            },
+            {
+              team: {
+                id: 11,
+                name: "Golden State Warriors",
+                logo: "https://media.api-sports.io/basketball/teams/11.png",
+              },
+              position: 2,
+              games: {
+                played: 20,
+                win: { total: 13, percentage: ".650" },
+                lose: { total: 7, percentage: ".350" },
+              },
+              group: { name: "Western Conference", points: "N/A" },
+            },
+            {
+              team: {
+                id: 13,
+                name: "Denver Nuggets",
+                logo: "https://media.api-sports.io/basketball/teams/13.png",
+              },
+              position: 3,
+              games: {
+                played: 20,
+                win: { total: 11, percentage: ".550" },
+                lose: { total: 9, percentage: ".450" },
+              },
+              group: { name: "Western Conference", points: "N/A" },
             },
           ],
         ],
@@ -339,6 +442,9 @@ const USE_MOCK_DATA =
   (SPORT_TYPE === "football" && !process.env.FOOTBALL_API_KEY) ||
   (SPORT_TYPE === "basketball" && !process.env.BASKETBALL_APISPORTS_KEY);
 
+// Control logging based on environment
+const ENABLE_DEBUG_LOGGING = process.env.NODE_ENV !== "production";
+
 // pull in competition code
 const FOOTBALL_COMPETITION = process.env.FOOTBALL_COMPETITION || "PL";
 
@@ -350,21 +456,24 @@ const apiService = {
       if (isCacheValid(cache.matches)) {
         return cache.matches.data;
       }
-
       if (USE_MOCK_DATA) {
         if (SPORT_TYPE === "football") {
-          console.log(
-            "Using mock football match data for development (getUpcomingMatches)"
-          );
+          if (ENABLE_DEBUG_LOGGING) {
+            console.log(
+              "Using mock football match data for development (getUpcomingMatches)"
+            );
+          }
           cache.matches = {
             data: MOCK_FOOTBALL_MATCHES,
             timestamp: Date.now(),
           };
           return MOCK_FOOTBALL_MATCHES;
         } else {
-          console.log(
-            "Using mock basketball game data for development (getUpcomingMatches)"
-          );
+          if (ENABLE_DEBUG_LOGGING) {
+            console.log(
+              "Using mock basketball game data for development (getUpcomingMatches)"
+            );
+          }
           cache.matches = {
             data: MOCK_BASKETBALL_GAMES,
             timestamp: Date.now(),
@@ -399,7 +508,9 @@ const apiService = {
       return response.data;
     } catch (error) {
       console.error("Error fetching upcoming matches/games:", error.message);
-      console.log("API error - Using mock data as fallback");
+      if (ENABLE_DEBUG_LOGGING) {
+        console.log("API error - Using mock data as fallback");
+      }
       const mockData =
         SPORT_TYPE === "football"
           ? MOCK_FOOTBALL_MATCHES
@@ -437,9 +548,11 @@ const apiService = {
             response: [foundGame || MOCK_BASKETBALL_GAMES.response[0]],
           };
         }
-        console.log(
-          `Using mock data for development (getMatchById: ${matchId}, type: ${SPORT_TYPE})`
-        );
+        if (ENABLE_DEBUG_LOGGING) {
+          console.log(
+            `Using mock data for development (getMatchById: ${matchId}, type: ${SPORT_TYPE})`
+          );
+        }
         cache.match[matchId] = { data: mockMatchData, timestamp: Date.now() };
         return mockMatchData;
       }
@@ -459,7 +572,9 @@ const apiService = {
         `Error fetching match/game with ID ${matchId}:`,
         error.message
       );
-      console.log("API error - Using mock data as fallback (getMatchById)");
+      if (ENABLE_DEBUG_LOGGING) {
+        console.log("API error - Using mock data as fallback (getMatchById)");
+      }
       let fallbackMock;
       if (SPORT_TYPE === "football") {
         const foundMatch =
@@ -483,9 +598,11 @@ const apiService = {
   getTeamById: async (teamId) => {
     try {
       if (USE_MOCK_DATA) {
-        console.log(
-          `Using mock team data for development (getTeamById: ${teamId}, type: ${SPORT_TYPE})`
-        );
+        if (ENABLE_DEBUG_LOGGING) {
+          console.log(
+            `Using mock team data for development (getTeamById: ${teamId}, type: ${SPORT_TYPE})`
+          );
+        }
         if (SPORT_TYPE === "football") {
           return {
             id: teamId,
@@ -522,7 +639,9 @@ const apiService = {
         !error.response
       ) {
         // Added 499, 500 for api-sports common errors
-        console.log(`API error/mock fallback for getTeamById: ${teamId}`);
+        if (ENABLE_DEBUG_LOGGING) {
+          console.log(`API error/mock fallback for getTeamById: ${teamId}`);
+        }
         if (SPORT_TYPE === "football") {
           return {
             id: teamId,
@@ -552,9 +671,11 @@ const apiService = {
       if (SPORT_TYPE === "basketball") {
         // api-basketball.com has H2H endpoint: /games/h2h?h2h=ID1-ID2
         if (USE_MOCK_DATA) {
-          console.log(
-            `Using mock H2H data for basketball (${team1Id} vs ${team2Id})`
-          );
+          if (ENABLE_DEBUG_LOGGING) {
+            console.log(
+              `Using mock H2H data for basketball (${team1Id} vs ${team2Id})`
+            );
+          }
           return { response: MOCK_BASKETBALL_GAMES.response.slice(0, 1) }; // Return a mock game as H2H
         }
         const response = await basketballApi.get(
@@ -564,9 +685,11 @@ const apiService = {
       }
       // Football logic remains
       if (USE_MOCK_DATA) {
-        console.log(
-          `Using mock H2H data for development (${team1Id} vs ${team2Id})`
-        );
+        if (ENABLE_DEBUG_LOGGING) {
+          console.log(
+            `Using mock H2H data for development (${team1Id} vs ${team2Id})`
+          );
+        }
         return { message: "Head-to-head mock data" };
       }
 
@@ -584,7 +707,9 @@ const apiService = {
         error
       );
       if (USE_MOCK_DATA || [401, 403, 404].includes(error.response?.status)) {
-        console.log(`API error/mock fallback for getHeadToHead`);
+        if (ENABLE_DEBUG_LOGGING) {
+          console.log(`API error/mock fallback for getHeadToHead`);
+        }
         return { message: "No head-to-head data available" };
       }
       throw error;
@@ -604,9 +729,11 @@ const apiService = {
           SPORT_TYPE === "football"
             ? MOCK_FOOTBALL_MATCHES
             : MOCK_BASKETBALL_GAMES;
-        console.log(
-          `Using mock data for today's matches (getTodaysMatches, type: ${SPORT_TYPE})`
-        );
+        if (ENABLE_DEBUG_LOGGING) {
+          console.log(
+            `Using mock data for today's matches (getTodaysMatches, type: ${SPORT_TYPE})`
+          );
+        }
         cache.todaysMatches = { data: mockData, timestamp: Date.now() };
         return mockData;
       }
@@ -629,7 +756,11 @@ const apiService = {
       return response.data;
     } catch (error) {
       console.error("Error fetching today's matches/games:", error.message);
-      console.log("API error - Using mock data as fallback (getTodaysMatches)");
+      if (ENABLE_DEBUG_LOGGING) {
+        console.log(
+          "API error - Using mock data as fallback (getTodaysMatches)"
+        );
+      }
       const mockData =
         SPORT_TYPE === "football"
           ? MOCK_FOOTBALL_MATCHES
@@ -657,9 +788,11 @@ const apiService = {
           SPORT_TYPE === "football"
             ? MOCK_FOOTBALL_MATCHES
             : MOCK_BASKETBALL_GAMES;
-        console.log(
-          `Using mock data for ${SPORT_TYPE} matches: ${competitionCodeOrLeagueId} (getCompetitionMatches)`
-        );
+        if (ENABLE_DEBUG_LOGGING) {
+          console.log(
+            `Using mock data for ${SPORT_TYPE} matches: ${competitionCodeOrLeagueId} (getCompetitionMatches)`
+          );
+        }
         cache.competitionMatches[cacheKey] = {
           data: mockData,
           timestamp: Date.now(),
@@ -715,9 +848,11 @@ const apiService = {
           SPORT_TYPE === "football"
             ? MOCK_FOOTBALL_STANDINGS
             : MOCK_BASKETBALL_STANDINGS;
-        console.log(
-          `Using mock data for ${SPORT_TYPE} standings: ${competitionCodeOrLeagueId} (getCompetitionStandings)`
-        );
+        if (ENABLE_DEBUG_LOGGING) {
+          console.log(
+            `Using mock data for ${SPORT_TYPE} standings: ${competitionCodeOrLeagueId} (getCompetitionStandings)`
+          );
+        }
         cache.standings[cacheKey] = { data: mockData, timestamp: Date.now() };
         return mockData;
       }
@@ -766,9 +901,11 @@ const apiService = {
         // Assuming MOCK_FOOTBALL_SCORERS is somewhat generic or you'd create MOCK_BASKETBALL_SCORERS
         const mockData =
           SPORT_TYPE === "football" ? MOCK_FOOTBALL_SCORERS : { response: [] }; // Placeholder for basketball scorers
-        console.log(
-          `Using mock data for ${SPORT_TYPE} scorers: ${competitionCodeOrLeagueId} (getCompetitionScorers)`
-        );
+        if (ENABLE_DEBUG_LOGGING) {
+          console.log(
+            `Using mock data for ${SPORT_TYPE} scorers: ${competitionCodeOrLeagueId} (getCompetitionScorers)`
+          );
+        }
         cache.scorers[cacheKey] = { data: mockData, timestamp: Date.now() };
         return mockData;
       }

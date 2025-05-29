@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import useMatchesStore from "../../store/matchesStore";
+import { SPORTS } from "../../services/apiHelper";
 
 const BasketballStandingsPage = () => {
   const { competitionCode = "12" } = useParams(); // Default to NBA (league ID 12)
@@ -14,9 +15,22 @@ const BasketballStandingsPage = () => {
     new URLSearchParams(location.search).get("season") ||
       `${new Date().getFullYear() - 1}-${new Date().getFullYear()}`
   );
+  const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
-    fetchCompetitionStandings(leagueId, season);
+    async function fetchData() {
+      try {
+        setFetchError(null);
+        await fetchCompetitionStandings(leagueId, season, SPORTS.BASKETBALL);
+      } catch (err) {
+        // Handle the error locally too
+        setFetchError(
+          `Unable to fetch standings. Please try again later. (Error: ${err.message})`
+        );
+      }
+    }
+
+    fetchData();
   }, [fetchCompetitionStandings, leagueId, season]);
 
   const handleLeagueChange = (e) => {
@@ -58,6 +72,46 @@ const BasketballStandingsPage = () => {
         };
       });
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-light dark:border-primary-dark"></div>
+      </div>
+    );
+  }
+
+  // Show combined error (from store or local)
+  const displayError = error || fetchError;
+  if (displayError) {
+    return (
+      <div className="text-center p-8 bg-red-100 dark:bg-red-900 rounded-lg">
+        <h2 className="text-xl font-bold text-red-600 dark:text-red-300 mb-2">
+          Error Loading Standings
+        </h2>
+        <p className="mb-4">{displayError}</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          This could be due to a network issue or the server may be unavailable.
+        </p>
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={() =>
+              fetchCompetitionStandings(leagueId, season, SPORTS.BASKETBALL)
+            }
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Try Again
+          </button>
+          <Link
+            to="/basketball/matches"
+            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+          >
+            View Matches
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -112,21 +166,6 @@ const BasketballStandingsPage = () => {
           League)
         </p>
       </div>
-
-      {loading && (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-light dark:border-primary-dark"></div>
-        </div>
-      )}
-
-      {error && (
-        <div className="text-center p-8 bg-red-100 dark:bg-red-900 rounded-lg">
-          <h2 className="text-xl font-bold text-red-600 dark:text-red-300 mb-2">
-            Error
-          </h2>
-          <p>{error}</p>
-        </div>
-      )}
 
       {!loading && !error && conferenceGroups.length > 0 ? (
         <div className="space-y-10">
