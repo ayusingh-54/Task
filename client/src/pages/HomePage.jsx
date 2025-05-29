@@ -74,7 +74,7 @@ const HomePage = () => {
             </Link>
 
             <Link
-              to="/football//today"
+              to="/football/today"
               className="card p-6 hover:shadow-lg transition-shadow"
             >
               <div className="text-center">
@@ -89,7 +89,7 @@ const HomePage = () => {
             </Link>
 
             <Link
-              to="/basketball//today"
+              to="/basketball/today"
               className="card p-6 hover:shadow-lg transition-shadow"
             >
               <div className="text-center">
