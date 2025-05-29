@@ -83,7 +83,7 @@ const MatchDetailsPage = () => {
           Error
         </h2>
         <p>{error}</p>
-        <Link to="/matches" className="btn btn-primary mt-4 inline-block">
+        <Link to="/" className="btn btn-primary mt-4 inline-block">
           Back to Matches
         </Link>
       </div>

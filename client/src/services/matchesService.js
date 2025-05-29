@@ -55,8 +55,8 @@ const matchesService = {
   // Get match details by ID
   getMatchById: async (matchId, sport = SPORTS.FOOTBALL) => {
     try {
-      const endpoint = addSportParam(`${API_URL}/matches/${matchId}`, sport);
-      const response = await axios.get(endpoint);
+      const endpoint = addSportParam(`matches/${matchId}`, sport);
+      const response = await apiClient.get(endpoint);
       return response.data;
     } catch (error) {
       console.error(`Error fetching ${sport} match with ID ${matchId}:`, error);
@@ -68,10 +68,10 @@ const matchesService = {
   getHeadToHead: async (team1Id, team2Id, sport = SPORTS.FOOTBALL) => {
     try {
       const endpoint = addSportParam(
-        `${API_URL}/matches/head-to-head/${team1Id}/${team2Id}`,
+        `matches/head-to-head/${team1Id}/${team2Id}`,
         sport
       );
-      const response = await axios.get(endpoint);
+      const response = await apiClient.get(endpoint);
       return response.data;
     } catch (error) {
       console.error(
@@ -85,8 +85,8 @@ const matchesService = {
   // Get team details by ID
   getTeamById: async (teamId, sport = SPORTS.FOOTBALL) => {
     try {
-      const endpoint = addSportParam(`${API_URL}/teams/${teamId}`, sport);
-      const response = await axios.get(endpoint);
+      const endpoint = addSportParam(`teams/${teamId}`, sport);
+      const response = await apiClient.get(endpoint);
       return response.data;
     } catch (error) {
       console.error(`Error fetching ${sport} team with ID ${teamId}:`, error);
@@ -136,13 +136,13 @@ const matchesService = {
     sport = SPORTS.FOOTBALL
   ) => {
     try {
-      let endpoint = `${API_URL}/matches/competitions/${competitionCode}/all`;
+      let endpoint = `matches/competitions/${competitionCode}/all`;
       if (season) {
         endpoint += `?season=${season}`;
       }
       endpoint = addSportParam(endpoint, sport);
 
-      const response = await axios.get(endpoint);
+      const response = await apiClient.get(endpoint);
       return response.data;
     } catch (error) {
       console.error(
@@ -337,13 +337,13 @@ const matchesService = {
     sport = SPORTS.FOOTBALL
   ) => {
     try {
-      let endpoint = `${API_URL}/matches/competitions/${competitionCode}/scorers`;
+      let endpoint = `matches/competitions/${competitionCode}/scorers`;
       if (season) {
         endpoint += `?season=${season}`;
       }
       endpoint = addSportParam(endpoint, sport);
 
-      const response = await axios.get(endpoint);
+      const response = await apiClient.get(endpoint);
       return response.data;
     } catch (error) {
       console.error(
@@ -357,8 +357,8 @@ const matchesService = {
   // Get previous matches
   getPreviousMatches: async (sport = SPORTS.FOOTBALL) => {
     try {
-      const endpoint = addSportParam(`${API_URL}/matches/previous`, sport);
-      const response = await axios.get(endpoint);
+      const endpoint = addSportParam(`matches/previous`, sport);
+      const response = await apiClient.get(endpoint);
       return response.data;
     } catch (error) {
       console.error(`Error fetching previous ${sport} matches:`, error);
